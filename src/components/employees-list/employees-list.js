@@ -2,12 +2,15 @@ import EmployeesListItem from "../employees-list-item/employees-list-item";
 
 import './employees-list.css';
 
-const EmployeesList = ({ data }) => {
+const EmployeesList = ({ data, onDelete, formSubmit }) => {
 
     const elements = data.map(item => { // так же если с бэкенда не приходит id элемента, то допускаектся использование индекса в переборе (допущение работает, только если порядок элементов изменяться не будет)
         const { id, ...itemProps } = item; // диструктуризация по остаточному признаку
         return (
-            <EmployeesListItem key={id} {...itemProps} /> // здесь используем object spred оператор, равносильно name={item.name}, salary={item.salary}, так же здесь добавляем атрибут key что бы реакт понимал какие компоненты ему изменять
+            <EmployeesListItem
+                key={id} {...itemProps}
+                onDelete={() => onDelete(id)}
+            /> // здесь используем object spred оператор, равносильно name={item.name}, salary={item.salary}, так же здесь добавляем атрибут key что бы реакт понимал какие компоненты ему изменять
         );
     });
 
