@@ -2,7 +2,7 @@ import EmployeesListItem from "../employees-list-item/employees-list-item";
 
 import './employees-list.css';
 
-const EmployeesList = ({ data, onDelete, formSubmit }) => {
+const EmployeesList = ({ data, onDelete, onToggleProp }) => {
 
     const elements = data.map(item => { // так же если с бэкенда не приходит id элемента, то допускаектся использование индекса в переборе (допущение работает, только если порядок элементов изменяться не будет)
         const { id, ...itemProps } = item; // диструктуризация по остаточному признаку
@@ -10,6 +10,7 @@ const EmployeesList = ({ data, onDelete, formSubmit }) => {
             <EmployeesListItem
                 key={id} {...itemProps}
                 onDelete={() => onDelete(id)}
+                onToggleProp={(e) => onToggleProp(id, e.currentTarget.getAttribute('data-prop'))}
             /> // здесь используем object spred оператор, равносильно name={item.name}, salary={item.salary}, так же здесь добавляем атрибут key что бы реакт понимал какие компоненты ему изменять
         );
     });

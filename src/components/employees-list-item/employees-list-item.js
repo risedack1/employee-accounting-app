@@ -6,43 +6,43 @@ class EmployeesListItem extends Component {
         super(props);
 
         this.state = {
-            increase: false,
-            up: false,
+            // increase: false,
+            // up: false,
         }
     }
 
-    onIncrease = () => {
-        this.setState(({ increase }) => ({
-            increase: !increase
-        }))
-    }
+    // onIncrease = () => {
+    //     this.setState(({ increase }) => ({
+    //         increase: !increase
+    //     }))
+    // }
 
-    onUp = () => {
-        this.setState(({ up }) => ({
-            up: !up
-        }))
-    }
+    // onUp = () => {
+    //     this.setState(({ up }) => ({
+    //         up: !up
+    //     }))
+    // }
 
     render() {
-        const { name, salary, onDelete } = this.props;
-        const { increase, up } = this.state;
+        const { name, salary, onDelete, onToggleProp, increase, rise } = this.props;
+        // const { increase, up } = this.state;
 
         let classNames = 'list-group-item d-flex justify-content-between';
         if (increase) {
             classNames += ' increase';
         }
 
-        if (up) {
+        if (rise) {
             classNames += ' like';
         }
 
         return (
             <li className={classNames}>
-                <span className="list-group-item-label" onClick={this.onUp}>{name}</span>
+                <span className="list-group-item-label" onClick={onToggleProp} data-prop='rise'>{name}</span>
                 <input type="text" className="list-group-item-input" defaultValue={salary + '$'} />
                 <div className='d-flex justify-content-center align-items-center'>
                     <button type="button"
-                        className="btn-cookie btn-sm" onClick={this.onIncrease}>
+                        className="btn-cookie btn-sm" onClick={onToggleProp} data-prop='increase'>
                         <i className="fas fa-cookie"></i>
                     </button>
 
