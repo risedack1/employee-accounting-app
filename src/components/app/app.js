@@ -121,7 +121,7 @@ class App extends Component {
       <div className='app' >
         <AppInfo
           employeesCount={employees}
-          bonuseCount={increased}
+          bonusCount={increased}
         />
         <div className="search-panel">
           <SearchPanel />

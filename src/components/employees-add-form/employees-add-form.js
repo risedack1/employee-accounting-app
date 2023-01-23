@@ -6,11 +6,12 @@ class EmployeesAddForm extends Component {
         super(props);
         this.state = {
             name: '',
-            salary: '',
+            salary: ''
         }
     }
 
     onValueChange = (e) => {
+        e.target.placeholder = e.target.name === 'name' ? 'Name' : 'Salary in $';
         this.setState({
             [e.target.name]: e.target.value // передаем значение input в state
         });
@@ -19,12 +20,27 @@ class EmployeesAddForm extends Component {
     formSubmit = (e, name, salary) => {
         e.preventDefault();
 
-        this.props.addItem(name, salary);
+        if (name.length > 3 && salary) {
+            this.props.addItem(name, salary);
 
-        this.setState(state => ({
-            name: '',
-            salary: '',
-        }))
+            this.setState(state => ({
+                name: '',
+                salary: '',
+
+            }))
+        } else {
+            if (name.length < 3) {
+                const input = e.target.querySelector('[name=name]');
+
+                input.placeholder = 'Incorrect';
+            }
+
+            if (!salary) {
+                const input = e.target.querySelector('[name=salary]');
+
+                input.placeholder = 'Incorrect';
+            }
+        }
     }
 
     render() {
@@ -37,14 +53,14 @@ class EmployeesAddForm extends Component {
                     className="add-form d-flex" onSubmit={(e) => this.formSubmit(e, name, salary)}>
                     <input type="text"
                         className="form-control new-post-label"
-                        // управляемый элемент, для того что бы реакт контролировал форму в ответ на пользовательский ввод, то мы доялжны для input добавить value и передать туда значение из state
-                        placeholder="Как его зовут?" name='name' value={name} onChange={this.onValueChange} />
+                        // управляемый элемент, для того что бы реакт контролировал форму в ответ на пользовательский ввод, то мы должны для input добавить value и передать туда значение из state
+                        placeholder='Name' name='name' value={name} onChange={this.onValueChange} />
                     <input type="number"
                         className="form-control new-post-label"
-                        placeholder="З/П в $?" name='salary' value={salary} onChange={this.onValueChange} />
+                        placeholder='Salary in $' name='salary' value={salary} onChange={this.onValueChange} />
 
                     <button type="submit"
-                        className="btn btn-outline-light">Добавить</button>
+                        className="btn btn-outline-light">Add employee</button>
                 </form>
             </div>
         )
