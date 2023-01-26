@@ -115,24 +115,12 @@ class App extends Component {
     }))
   }
 
-  searchEmp = (data, term, filterType) => {
-    let tempData;
-
-    switch (filterType) {
-      case 'rise':
-        tempData = data.filter(item => item.rise);
-        break;
-      case 'salary':
-        tempData = data.filter(item => item.salary >= 1000);
-        break;
-      default:
-        tempData = data;
-    }
+  searchEmp = (data, term) => {
 
     if (term.length > 0) {
-      return tempData.filter(item => item.name.toLowerCase().includes(term.toLowerCase()))
+      return data.filter(item => item.name.toLowerCase().includes(term.toLowerCase()))
     } else {
-      return tempData;
+      return data;
     }
   }
 
@@ -142,10 +130,18 @@ class App extends Component {
     }))
   }
 
-  changeFilter = (e) => {
-    const filterType = e.target.getAttribute('data-type');
-    console.log(filterType);
+  changeFilter = (data, filterType) => {
+    switch (filterType) {
+      case 'rise':
+        return data.filter(item => item.rise);
+      case 'salary':
+        return data.filter(item => item.salary >= 1000);
+      default:
+        return data;
+    }
+  }
 
+  changeFilterType = (filterType) => {
     this.setState(({ filterType }))
   }
 
@@ -153,7 +149,7 @@ class App extends Component {
     const { data, term, filterType } = this.state;
     const employees = this.state.data.length;
     const increased = this.state.data.filter(elem => elem.increase).length;
-    const visibleData = this.searchEmp(data, term, filterType)
+    const visibleData = this.changeFilter(this.searchEmp(data, term), filterType)
 
     return (
       <div className='app' >
@@ -166,7 +162,8 @@ class App extends Component {
             onSearch={this.onSearch}
           />
           <AppFilter
-            changeFilter={this.changeFilter}
+            filterType={filterType}
+            changeFilterType={this.changeFilterType}
           />
         </div>
         <EmployeesList

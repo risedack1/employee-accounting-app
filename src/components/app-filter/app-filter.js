@@ -1,35 +1,30 @@
-import { Component } from "react";
 import "./app-filter.css";
 
-class AppFilter extends Component {
-    render() {
-        const { changeFilter } = this.props;
+const AppFilter = (props) => {
+    const buttonsArr = [
+        { text: 'All employees', name: 'all' },
+        { text: 'Career promotion', name: 'rise' },
+        { text: 'Salary over 1000$', name: 'salary' },
+    ];
+
+    const buttons = buttonsArr.map(({ text, name }) => {
+        const active = name === props.filterType ? 'btn-light' : 'btn-outline-light';
         return (
-            <div className="btn-group">
-                <button type="button"
-                    className="btn btn-light"
-                    data-type="all"
-                    onClick={(e) => changeFilter(e)}
-                >
-                    All employees
-                </button>
-                <button type="button"
-                    className="btn btn-outline-light"
-                    data-type="rise"
-                    onClick={(e) => changeFilter(e)}
-                >
-                    Career promotion
-                </button>
-                <button type="button"
-                    className="btn btn-outline-light"
-                    data-type="salary"
-                    onClick={(e) => changeFilter(e)}
-                >
-                    Salary over 1000$
-                </button>
-            </div>
+            <button className={`btn ${active}`}
+                type="button"
+                key={name}
+                onClick={() => props.changeFilterType(name)}
+            >
+                {text}
+            </button>
         )
-    }
+    })
+
+    return (
+        <div className="btn-group">
+            {buttons}
+        </div>
+    )
 }
 
 export default AppFilter;
