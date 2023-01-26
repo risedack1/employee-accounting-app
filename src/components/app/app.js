@@ -18,6 +18,8 @@ class App extends Component {
         { name: 'Alex M.', salary: 3000, increase: true, rise: false, id: nextId() },
         { name: 'Carl W..', salary: 5000, increase: false, rise: false, id: nextId() },
       ],
+      term: '',
+      filterType: 'all',
     };
 
   }
@@ -113,9 +115,45 @@ class App extends Component {
     }))
   }
 
+  searchEmp = (data, term, filterType) => {
+    let tempData;
+
+    switch (filterType) {
+      case 'rise':
+        tempData = data.filter(item => item.rise);
+        break;
+      case 'salary':
+        tempData = data.filter(item => item.salary >= 1000);
+        break;
+      default:
+        tempData = data;
+    }
+
+    if (term.length > 0) {
+      return tempData.filter(item => item.name.toLowerCase().includes(term.toLowerCase()))
+    } else {
+      return tempData;
+    }
+  }
+
+  onSearch = (term) => {
+    this.setState(state => ({
+      term: term,
+    }))
+  }
+
+  changeFilter = (e) => {
+    const filterType = e.target.getAttribute('data-type');
+    console.log(filterType);
+
+    this.setState(({ filterType }))
+  }
+
   render() {
+    const { data, term, filterType } = this.state;
     const employees = this.state.data.length;
     const increased = this.state.data.filter(elem => elem.increase).length;
+    const visibleData = this.searchEmp(data, term, filterType)
 
     return (
       <div className='app' >
@@ -124,11 +162,15 @@ class App extends Component {
           bonusCount={increased}
         />
         <div className="search-panel">
-          <SearchPanel />
-          <AppFilter />
+          <SearchPanel
+            onSearch={this.onSearch}
+          />
+          <AppFilter
+            changeFilter={this.changeFilter}
+          />
         </div>
         <EmployeesList
-          data={this.state.data}
+          data={visibleData}
           onDelete={this.deleteItem} // прокидываем функцию дальше в другие вложенные компоненты
           onToggleProp={this.onToggleProp}
         />
